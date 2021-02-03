@@ -1,10 +1,9 @@
-package com.example.ClinicCalendar;
+package com.example.cliniccalendar.controller;
 
-import com.example.ClinicCalendar.controller.DoctorController;
-import com.example.ClinicCalendar.model.Appointment;
-import com.example.ClinicCalendar.model.Doctor;
-import com.example.ClinicCalendar.service.AppointmentServiceImpl;
-import com.example.ClinicCalendar.service.DoctorServiceImpl;
+import com.example.cliniccalendar.model.Appointment;
+import com.example.cliniccalendar.model.Doctor;
+import com.example.cliniccalendar.service.AppointmentServiceImpl;
+import com.example.cliniccalendar.service.DoctorServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

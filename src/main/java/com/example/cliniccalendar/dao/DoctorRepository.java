@@ -1,6 +1,6 @@
-package com.example.ClinicCalendar.dao;
+package com.example.cliniccalendar.dao;
 
-import com.example.ClinicCalendar.model.Doctor;
+import com.example.cliniccalendar.model.Doctor;
 import org.springframework.data.repository.CrudRepository;
 
 import java.util.Optional;

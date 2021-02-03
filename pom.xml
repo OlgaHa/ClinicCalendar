@@ -18,6 +18,8 @@
         <java.version>14</java.version>
         <sonar.login>5c51d0f207b8cdd131e1a03b5c6fb2b34b8a950d</sonar.login>
         <sonar.java.binaries>${basedir}/target/classes</sonar.java.binaries>
+        <sonar.java.tests>${basedir}/src/test/java</sonar.java.tests>
+
     </properties>
 
     <dependencies>

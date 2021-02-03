@@ -1,4 +1,4 @@
-package com.example.ClinicCalendar.rest;
+package com.example.cliniccalendar.rest;
 
 public class AppointmentDTO {
 

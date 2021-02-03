@@ -1,6 +1,6 @@
-package com.example.ClinicCalendar.service;
+package com.example.cliniccalendar.service;
 
-import com.example.ClinicCalendar.model.Doctor;
+import com.example.cliniccalendar.model.Doctor;
 
 import java.util.List;
 

@@ -1,7 +1,7 @@
-package com.example.ClinicCalendar.service;
+package com.example.cliniccalendar.service;
 
-import com.example.ClinicCalendar.dao.AppointmentRepository;
-import com.example.ClinicCalendar.model.Appointment;
+import com.example.cliniccalendar.dao.AppointmentRepository;
+import com.example.cliniccalendar.model.Appointment;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

@@ -1,4 +1,4 @@
-package com.example.ClinicCalendar.model;
+package com.example.cliniccalendar.model;
 
 import javax.persistence.*;
 

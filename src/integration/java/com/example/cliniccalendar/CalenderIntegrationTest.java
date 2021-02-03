@@ -1,11 +1,11 @@
-package com.example.ClinicCalendar;
+package com.example.cliniccalendar;
 
-import com.example.ClinicCalendar.controller.DoctorController;
-import com.example.ClinicCalendar.model.Appointment;
-import com.example.ClinicCalendar.model.Doctor;
-import com.example.ClinicCalendar.rest.AppointmentDTO;
-import com.example.ClinicCalendar.rest.DoctorDTO;
-import com.example.ClinicCalendar.rest.ResponseDTO;
+import com.example.cliniccalendar.controller.DoctorController;
+import com.example.cliniccalendar.model.Appointment;
+import com.example.cliniccalendar.model.Doctor;
+import com.example.cliniccalendar.rest.AppointmentDTO;
+import com.example.cliniccalendar.rest.DoctorDTO;
+import com.example.cliniccalendar.rest.ResponseDTO;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;

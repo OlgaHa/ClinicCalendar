@@ -1,4 +1,4 @@
-package com.example.ClinicCalendar.rest;
+package com.example.cliniccalendar.rest;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

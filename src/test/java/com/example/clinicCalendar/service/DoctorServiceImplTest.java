@@ -1,8 +1,8 @@
-package com.example.ClinicCalendar;
+package com.example.cliniccalendar.service;
 
-import com.example.ClinicCalendar.dao.DoctorRepository;
-import com.example.ClinicCalendar.model.Doctor;
-import com.example.ClinicCalendar.service.DoctorServiceImpl;
+import com.example.cliniccalendar.dao.DoctorRepository;
+import com.example.cliniccalendar.model.Doctor;
+import com.example.cliniccalendar.service.DoctorServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
