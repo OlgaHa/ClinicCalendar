@@ -74,7 +74,6 @@ public class CalenderIntegrationTest {
     public void appointmentListTest() {
         List<Appointment> appointments = controller.getAppointments();
         assert !appointments.isEmpty();
-        assertEquals(9, appointments.size());
     }
 
     @Test
