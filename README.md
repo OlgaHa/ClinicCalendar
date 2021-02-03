@@ -1,14 +1,12 @@
-Assignment Requirements
-========================
-
--  Create the project using Maven/Gradle
--  create a branch from InnerSource repository and commit your App into that branch.
--  Implement the main logic of your selected topics with all the needed services, UIs, DTO, etc.
--  Your app should use Spring framework
--  All services must have 70% to 80% test coverage
--  Your app should have both Unit and Integration tests
--  you should create Jenkins jobs to build and test the application.
--  All code must comply with the Java naming conventions and best practices(use SonalLint/SonaQube )
--  At the presentation session you should be able to demo at least 2 working functions on your app
--  You should provide a presentation showing a Sonar report on the test coverage and code quality in your app and explaining the idea you&#39;ve picked and implemented
--  You should have at least 3 commits per preson on InnerSource repository for  your app.
+This is a Clinic Calendar application.
+Patients can make appointments to the specific doctors, there is possible to check each doctor's appointments.
+Doctors' list is available by the address http://localhost:8080/doctors/ (in JSON format).
+Each doctor and their appointments are available by the doctor's id (for example, http://localhost:8080/doctors/1).
+Doctors can be found by the name via link http://localhost:8080/search (for instance http://localhost:8080/search?name=hunt).
+New doctor can be added by the link http://localhost:8080/doctors/ (in JSON format).
+All the appointments are available by the address http://localhost:8080/appointments.
+Each appointment can be reached by doctor's id (e.g. http://localhost:8080/appointments/1).
+Each appointment can be reached by appointment's id (e.g. http://localhost:8080/appointments/id/1).
+New appointment can be added by the address http://localhost:8080/appointments (in JSON format).
+Appointment can be added by the address http://localhost:8080/appointments (in JSON format).
+Appointment can be deleted by the address http://localhost:8080/appointments/delete/id, (e.g. http://localhost:8080/appointments/delete/1)

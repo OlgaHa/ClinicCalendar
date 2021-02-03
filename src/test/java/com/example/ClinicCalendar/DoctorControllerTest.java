@@ -3,28 +3,26 @@ package com.example.ClinicCalendar;
 import com.example.ClinicCalendar.controller.DoctorController;
 import com.example.ClinicCalendar.model.Appointment;
 import com.example.ClinicCalendar.model.Doctor;
-import com.example.ClinicCalendar.service.AppointmentService;
-import com.example.ClinicCalendar.service.DoctorService;
+import com.example.ClinicCalendar.service.AppointmentServiceImpl;
+import com.example.ClinicCalendar.service.DoctorServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.hamcrest.Matchers.containsString;
-import static org.mockito.Mockito.verify;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.mockito.Mockito.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -35,18 +33,20 @@ public class DoctorControllerTest {
     private List<Appointment> appointments;
     private Doctor doctor;
     private int doctorId;
+    private int id;
 
     @Autowired
     MockMvc mockMvc;
     @MockBean
-    DoctorService doctorService;
+    DoctorServiceImpl doctorService;
     @MockBean
-    AppointmentService appointmentService;
+    AppointmentServiceImpl appointmentService;
 
     @BeforeEach
     public void setUp() {
         doctorId = 1;
-        appointment = new Appointment(2, "Hanna D.", "2021-08-01 14:20", doctorId);
+        id = 2;
+        appointment = new Appointment(id, "Hanna D.", "2021-08-01 14:20", doctorId);
         appointments = new ArrayList<>();
         appointments.add(appointment);
         doctor = new Doctor(doctorId, "Alan Carter", "surgeon", appointments);
@@ -104,10 +104,9 @@ public class DoctorControllerTest {
     @Test
     public void saveDoctorTest() throws Exception {
         Doctor doctor = new Doctor();
-        doctor.setDoctorId(1);
         doctor.setName("Alan Carter");
         doctor.setSpecialization("surgeon");
-        String testString = "{\"doctorId\":1,\"name\":\"Alan Carter\",\"specialization\":\"surgeon\"," +
+        String testString = "{\"name\":\"Alan Carter\",\"specialization\":\"surgeon\"," +
                 "\"appointments\":null}";
 
         when(doctorService.saveDoctor(any(Doctor.class))).thenReturn(doctor);
@@ -143,7 +142,7 @@ public class DoctorControllerTest {
         String testString = "{\"id\":2,\"patientName\":\"Hanna D.\",\"dateAndTime\":\"2021-08-01 " +
                 "14:20\",\"doctorId\":1}";
 
-        when(appointmentService.saveAppointment(Mockito.any(Appointment.class))).thenReturn(appointment);
+        when(appointmentService.saveAppointment(any(Appointment.class))).thenReturn(appointment);
 
         mockMvc.perform(post("/appointments")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -151,6 +150,33 @@ public class DoctorControllerTest {
                 .andExpect(status().isOk());
 
         verify(appointmentService).saveAppointment(any());
+    }
+
+    @Test
+    public void getAppointmentById() throws Exception {
+        when(appointmentService.findById(id)).thenReturn(appointment);
+
+        mockMvc.perform(get("/appointments/id/2"))
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString("Hanna")));
+
+        verify(appointmentService).findById(id);
+    }
+
+    @Test
+    public void deleteAppointment() throws Exception {
+        mockMvc.perform(delete("/appointments/delete/2"))
+                .andExpect(status().isOk());
+
+        verify(appointmentService).deleteAppointment(id);
+    }
+
+    @Test
+    public void deleteAppointment_error() throws Exception {
+    doThrow(new EmptyResultDataAccessException(3)).when(appointmentService).deleteAppointment(3);
+
+        mockMvc.perform(delete("/appointments/delete/3"))
+                .andExpect(status().isNotFound());
     }
 }
 

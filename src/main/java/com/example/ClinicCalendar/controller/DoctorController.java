@@ -5,22 +5,26 @@ import com.example.ClinicCalendar.model.Doctor;
 import com.example.ClinicCalendar.rest.AppointmentDTO;
 import com.example.ClinicCalendar.rest.DoctorDTO;
 import com.example.ClinicCalendar.rest.ResponseDTO;
-import com.example.ClinicCalendar.service.AppointmentService;
-import com.example.ClinicCalendar.service.DoctorService;
+import com.example.ClinicCalendar.service.AppointmentServiceImpl;
+import com.example.ClinicCalendar.service.DoctorServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @RestController
 @RequestMapping("/")
 public class DoctorController {
 
     @Autowired
-    private DoctorService doctorService;
+    private DoctorServiceImpl doctorService;
     @Autowired
-    private AppointmentService appointmentService;
+    private AppointmentServiceImpl appointmentService;
 
     @GetMapping("/doctors")
     public List<Doctor> getDoctors() {
@@ -30,7 +34,7 @@ public class DoctorController {
     @GetMapping("/doctors/{id}")
     public ResponseDTO<Doctor> getDoctorById(@PathVariable int id) {
         Doctor doctor = doctorService.findDoctorById(id);
-        if(doctor == null)
+        if (doctor == null)
             return new ResponseDTO(
                     "Sorry, we don't have doctor with id " + id,
                     HttpStatus.NOT_FOUND
@@ -43,7 +47,7 @@ public class DoctorController {
     @GetMapping("/search")
     public ResponseDTO getDoctorByName(@RequestParam String name) {
         Doctor doctor = doctorService.findDoctorByName(name);
-        if(doctor == null) {
+        if (doctor == null) {
             return new ResponseDTO(
                     "Sorry, we don't have doctor " + name,
                     HttpStatus.NOT_FOUND
@@ -56,7 +60,6 @@ public class DoctorController {
     @PostMapping("/doctors")
     public Doctor saveDoctor(@RequestBody DoctorDTO doctorDTO) {
         Doctor doctor = new Doctor();
-        doctor.setDoctorId(doctorDTO.getId());
         doctor.setName(doctorDTO.getName());
         doctor.setSpecialization(doctorDTO.getSpecialization());
         doctorService.saveDoctor(doctor);
@@ -73,15 +76,38 @@ public class DoctorController {
         return appointmentService.findAppoinmentByDoctorId(id);
     }
 
+    @GetMapping("/appointments/id/{id}")
+    public AppointmentDTO getAppointmentById(@PathVariable int id) {
+        Appointment appointment = appointmentService.findById(id);
+
+        AppointmentDTO appointmentDTO = new AppointmentDTO();
+        appointmentDTO.setId(appointment.getId());
+        appointmentDTO.setName(appointment.getPatientName());
+        appointmentDTO.setDateAndTime(appointment.getDateAndTime());
+        appointmentDTO.setDoctorId(appointment.getDoctorId());
+
+        return appointmentDTO;
+    }
+
     @PostMapping("/appointments")
     public Appointment saveAppointment(@RequestBody AppointmentDTO appointmentDTO) {
         Appointment appointment = new Appointment();
         appointment.setId(appointmentDTO.getId());
-        appointment.setDateAndTime(appointmentDTO.getDateAndTime());
         appointment.setPatientName(appointmentDTO.getName());
+        appointment.setDateAndTime(appointmentDTO.getDateAndTime());
         appointment.setDoctorId(appointmentDTO.getDoctorId());
 
         appointmentService.saveAppointment(appointment);
         return appointment;
+    }
+
+    @DeleteMapping("/appointments/delete/{id}")
+    public ResponseEntity<Void> deleteAppointment(@PathVariable int id) {
+        try {
+            appointmentService.deleteAppointment(id);
+        } catch (EmptyResultDataAccessException dae) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok().build();
     }
 }

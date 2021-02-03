@@ -10,6 +10,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.List;
@@ -17,9 +18,9 @@ import java.util.Objects;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+@ActiveProfiles("test")
 @RunWith(SpringRunner.class)
-@SpringBootTest(properties = {"spring.datasource.url=jdbc:h2:~/test_db",
-        "spring.jpa.hibernate.ddl-auto=create-drop"})
+@SpringBootTest(classes = ClinicCalendarApplication.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class CalenderIntegrationTest {
 
     @Autowired
@@ -29,7 +30,6 @@ public class CalenderIntegrationTest {
     public void doctorsListTest() {
         List<Doctor> doctors = controller.getDoctors();
         assert !doctors.isEmpty();
-        assertEquals(6, doctors.size());
     }
 
     @Test
@@ -37,21 +37,21 @@ public class CalenderIntegrationTest {
         ResponseDTO<Doctor> responseDTO = controller.getDoctorById(1);
 
         assertEquals("Derek Shepherd", Objects.requireNonNull(responseDTO.getBody()).getName());
-        assertEquals("neurosurgeon",responseDTO.getBody().getSpecialization());
+        assertEquals("neurosurgeon", responseDTO.getBody().getSpecialization());
         assertEquals("200 OK", responseDTO.getStatusCode().toString());
 
         responseDTO = controller.getDoctorById(100);
 
-        assertEquals( "Sorry, we don't have doctor with id 100", responseDTO.getBody());
+        assertEquals("Sorry, we don't have doctor with id 100", responseDTO.getBody());
         assertEquals("404 NOT_FOUND", responseDTO.getStatusCode().toString());
     }
 
     @Test
     public void searchTest() {
-        ResponseDTO <Doctor> responseDTO = controller.getDoctorByName("hunt");
+        ResponseDTO<Doctor> responseDTO = controller.getDoctorByName("hunt");
 
-        assertEquals("Owen Hunt",  Objects.requireNonNull(responseDTO.getBody()).getName());
-        assertEquals("trauma surgeon",responseDTO.getBody().getSpecialization());
+        assertEquals("Owen Hunt", Objects.requireNonNull(responseDTO.getBody()).getName());
+        assertEquals("trauma surgeon", responseDTO.getBody().getSpecialization());
 
         responseDTO = controller.getDoctorByName("aaa");
 
@@ -60,16 +60,14 @@ public class CalenderIntegrationTest {
     }
 
     @Test
-    public void saveDoctorTest(){
+    public void saveDoctorTest() {
         DoctorDTO doctorDTO = new DoctorDTO();
         doctorDTO.setName("Test Test");
         doctorDTO.setSpecialization("test surgeon");
-        doctorDTO.setId(8);
 
         Doctor savedDoctor = controller.saveDoctor(doctorDTO);
 
         assertEquals("Test Test", savedDoctor.getName());
-        assertEquals(8, savedDoctor.getDoctorId());
     }
 
     @Test
@@ -98,5 +96,12 @@ public class CalenderIntegrationTest {
 
         assertEquals("Test Test", savedAppointment.getPatientName());
         assertEquals(9, savedAppointment.getId());
+    }
+
+    @Test
+    public void appointmentsByIdTest() {
+        AppointmentDTO appointmentDTO = controller.getAppointmentById(1);
+        assertEquals(1, appointmentDTO.getDoctorId());
+        assertEquals("Dave Grohl", appointmentDTO.getName());
     }
 }

@@ -10,6 +10,7 @@ public class Doctor {
 
     @Id
     @Column(name = "doctor_id")
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private int doctorId;
     private String name;
     private String specialization;
